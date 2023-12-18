@@ -16,22 +16,10 @@ class TicTacToe:
                 button.grid(row=i, column=j)
                 row.append(button)
             self.buttons.append(row)
-
-        self.turn_label = tk.Label(self.root, text="Choose your player: X or O")
-        self.turn_label.grid(row=3, column=0, columnspan=3)
-
-        self.player_x_button = tk.Button(self.root, text="Player X", command=lambda: self.choose_player("X"))
-        self.player_x_button.grid(row=4, column=0)
-
-        self.player_o_button = tk.Button(self.root, text="Player O", command=lambda: self.choose_player("O"))
-        self.player_o_button.grid(row=4, column=1)
-
-        self.reset_button = tk.Button(self.root, text="Reset Game", command=self.reset_game)
-        self.reset_button.grid(row=4, column=2)
+            self.choose_player("X")
 
     def choose_player(self, player):
         self.current_player = player
-        self.turn_label.config(text=f"Player {self.current_player}'s turn")
         self.game_active = True
 
     def button_clicked(self, i, j):
@@ -45,12 +33,9 @@ class TicTacToe:
             messagebox.showinfo("Game Over", "It's a Draw!\nClick OK to reset the game.")
             self.reset_game()
             return
-        self.toggle_player()
-
-            
+        # Switch players
         self.current_player = "O" if self.current_player == "X" else "X"
-        self.turn_label.config(text=f"Player {self.current_player}'s turn")
-
+    
     def check_winner(self):
         for i in range(3):
             if self.buttons[i][0]["text"] == self.buttons[i][1]["text"] == self.buttons[i][2]["text"] != "":
@@ -67,21 +52,18 @@ class TicTacToe:
     
     def is_draw(self):
         return all(self.buttons[i][j]["text"] for i in range(3) for j in range(3))
-
-
+    
     def toggle_player(self):
         self.current_player = "O" if self.current_player == "X" else "X"
-        self.turn_label.config(text=f"Player {self.current_player}'s turn")
 
     def reset_game(self):
         for i in range(3):
             for j in range(3):
                 self.buttons[i][j].config(text="")
         self.current_player = ""
-        self.turn_label.config(text="Choose your player: X or O")
-        self.game_active = False
+        self.choose_player("X")
+        self.game_active = True
         
-
 if __name__ == "__main__":
     game = TicTacToe()
     game.root.mainloop()
